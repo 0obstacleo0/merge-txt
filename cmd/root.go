@@ -12,13 +12,14 @@ import (
 )
 
 var path string
+var row int
 
 var rootCmd = &cobra.Command{
 	Use:   "merge-txt",
 	Short: "任意のフォルダ内のテキストファイルを結合",
 	Long:  "任意のフォルダ内のテキストファイルを結合",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		contents, err := file.Read(path)
+		contents, err := file.Read(path, row)
 		if err != nil {
 			log.Fatalln(err)
 		}
@@ -47,7 +48,8 @@ func init() {
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 
 	// フラグの値を変数にバインド
-	rootCmd.Flags().StringVar(&path, "path", "", "Diretory Path")
+	rootCmd.Flags().StringVar(&path, "path", "", "ファイル保存場所")
+	rootCmd.Flags().IntVar(&row, "row", 1, "ヘッダー行数")
 
 	// 必須のフラグに指定
 	rootCmd.MarkFlagRequired("path")

@@ -8,12 +8,7 @@ import (
 	"strings"
 )
 
-func Read(folderPath string, headerRows ...int) ([]string, error) {
-	rows := 1
-	if len(headerRows) > 0 {
-		rows = headerRows[0]
-	}
-
+func Read(folderPath string, headerRows int) ([]string, error) {
 	var contents []string
 
 	files, err := os.ReadDir(folderPath)
@@ -33,7 +28,7 @@ func Read(folderPath string, headerRows ...int) ([]string, error) {
 
 			txt := strings.Split(string(content), "\n")
 			if i > 0 {
-				txt = txt[rows:]
+				txt = txt[headerRows:]
 			}
 			contents = append(contents, txt...)
 		}
