@@ -5,9 +5,15 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"strings"
 )
 
-func Read(folderPath string) ([]string, error) {
+func Read(folderPath string, headerRows ...int) ([]string, error) {
+	rows := 1
+	if len(headerRows) > 0 {
+		rows = headerRows[0]
+	}
+
 	var contents []string
 
 	files, err := os.ReadDir(folderPath)
@@ -16,7 +22,7 @@ func Read(folderPath string) ([]string, error) {
 		return contents, err
 	}
 
-	for _, file := range files {
+	for i, file := range files {
 		if !file.IsDir() {
 			filePath := filepath.Join(folderPath, file.Name())
 			content, err := os.ReadFile(filePath)
@@ -24,7 +30,12 @@ func Read(folderPath string) ([]string, error) {
 				log.Printf("Failed to read file %s: %v", filePath, err)
 				return contents, err
 			}
-			contents = append(contents, string(content))
+
+			txt := strings.Split(string(content), "\n")
+			if i > 0 {
+				txt = txt[rows:]
+			}
+			contents = append(contents, txt...)
 		}
 	}
 
