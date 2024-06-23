@@ -1,7 +1,10 @@
 package file
 
 import (
+	"crypto/rand"
+	"encoding/hex"
 	"os"
+	"path/filepath"
 	"testing"
 )
 
@@ -43,5 +46,27 @@ func TestRead(t *testing.T) {
 
 	if len(contents) != 6 {
 		t.Errorf("Expected rows 6, but got %d", len(contents))
+	}
+}
+
+func TestMake(t *testing.T) {
+	tempDir := os.TempDir()
+
+	bytes := make([]byte, 10)
+	if _, err := rand.Read(bytes); err != nil {
+		t.Fatalf("Failed to generate random name: %v", err)
+	}
+	fileName := hex.EncodeToString(bytes)
+
+	filePath := filepath.Join(tempDir, fileName)
+	data := "name,age\ntaro,30\nmayu,20"
+	defer os.Remove(filePath)
+
+	if err := Make(filePath, data); err != nil {
+		t.Errorf("Make returned an error: %v", err)
+	}
+
+	if _, err := os.Stat(filePath); err != nil {
+		t.Error("Unable to retrieve file information")
 	}
 }
