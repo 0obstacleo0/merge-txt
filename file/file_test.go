@@ -6,7 +6,7 @@ import (
 )
 
 func TestRead(t *testing.T) {
-	tempDir, err := os.MkdirTemp("/tmp", "testdir")
+	tempDir, err := os.MkdirTemp("", "testdir")
 	if err != nil {
 		t.Fatalf("Failed to create temporary directory:%v", err)
 	}
