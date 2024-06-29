@@ -44,9 +44,6 @@ func Execute() {
 }
 
 func init() {
-	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
-
 	// フラグの値を変数にバインド
 	rootCmd.Flags().StringVar(&path, "path", "", "File Location")
 	rootCmd.Flags().IntVar(&row, "row", 1, "Header Lines")
