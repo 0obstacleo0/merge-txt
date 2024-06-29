@@ -27,10 +27,17 @@ func Read(folderPath string, headerRows int) ([]string, error) {
 			}
 
 			txt := strings.Split(string(content), "\n")
-			if i > 0 {
-				txt = txt[headerRows:]
+			newTxt := []string{}
+			for _, v := range txt {
+				if v != "" {
+					newTxt = append(newTxt, v)
+				}
 			}
-			contents = append(contents, txt...)
+
+			if i > 0 {
+				newTxt = newTxt[headerRows:]
+			}
+			contents = append(contents, newTxt...)
 		}
 	}
 
